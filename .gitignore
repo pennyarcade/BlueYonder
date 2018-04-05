@@ -102,3 +102,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# metric report files
+metrics/*
+
+# log files should not be committed
+logs/*
+
+# input files should not be committed
+inbox/*.input.txt
+
