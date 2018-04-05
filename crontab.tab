@@ -1,3 +1,9 @@
+# Blue Yonder Coding Task - Image downloader
+# Author: Martin Tönnishoff
+# Created: 2018/04/05
+#
+# Crontab entries and documentation for the image download scripts
+#
 # Edit this file to introduce tasks to be run by cron.
 #
 # Each task to run has to be defined through a single line
@@ -20,4 +26,41 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 #
 # m h  dom mon dow   command
-*/5 * * * * wget -a /var/log/download.log -nv -i /var/downloader/inbox/urlstodownload.txt --config=/var/downloader/wgetrc --rejected-log=/var/log/download_failed.log -w 5 --random-wait -nd -P /var/www/blueyonder/images/ 
+
+# All Scripts below should be executed with a user with very limited permissions that shares the group with the web server's user
+# so the downloaded files have the right permissions to be served directly.
+# examples:
+# www-data:www-data     - use the standard webserver user to run the downloader script
+# daemon:www-data       - use the standard Linux service user in the webserver's group
+# downloader:www-data   - Preferred method if adding users is possible: use a dedicated user for the downloader in the webserver's group
+
+*/5 * * * * /var/downloader/quickanddirty.py /var/downloader/inbox/urlstodownload.txt >> /var/log/download.quickanddirty.log
+
+# Example 2.1 - Quick and dirty prototype
+# @see README.md
+# This example is not meant for production use and just a proof of concept. There is no error handling and the output is unformatted.
+# The script includes a shebang header so it can be made executable on Linux with 'chmod'
+# /var/downloader/inbox/urlstodownload.txt  The only argument is the input file
+# >> /var/log/download.quickanddirty.log    The standard output is redirected by the shell and appended to a log file which
+#                                           can be rotated with logrotate
+
+*/5 * * * * wget -a /var/log/download.wget.log -nv -i /var/downloader/inbox/urlstodownload.txt --config=/var/downloader/wgetrc --rejected-log=/var/log/download_failed.wget.log -w 5 --random-wait -nd - nc -P /var/www/blueyonder/images/
+
+# Example 2.2 - Cheated with wget
+# @see README.md
+# The options used above are a minimal example. wget can also deal with different kinds of authentication and caching.
+# Retrival of files is possible via http, https and ftp. wget can keep session cookies. It is a very powerful tool.
+#
+# -a /var/log/download.wget.log                      write output to a logfile instead of stdout. This logfile can be rotated with logrotate
+# -nv                                                make the output less verbose but not totally silent. This limits log file size for production use.
+#                                                    you can make the output more verbose for debugging
+# --rejected-log=/var/log/download_failed.wget.log   write failed downloads to a separate file, good for monitoring and debugging purposes
+# -i /var/downloader/inbox/urlstodownload.txt        read the urls to download from an input file
+# --config=/var/downloader/wgetrc                    read a standard configuration from this file
+# -w 5                                               wait 5 seconds between each download
+# --random-wait                                      if downloading from a web server with crawler protection try to fool the
+#                                                    server by making the wait period somewhat random. This is good if you have to
+#                                                    download from a production frontend or doing business intelligence
+# -nd                                                Since we want to serve the images as is, do not generate a directory structure
+# -nc                                                Do not overwrite existing files, do not produce duplicates
+# -P /var/www/blueyonder/images/                     write downloaded files to this directory (in this case a standard web server directory)
