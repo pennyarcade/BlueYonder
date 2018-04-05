@@ -1,9 +1,18 @@
 # BlueYonder
 ## Blue Yonder coding task
 
-### 1. Introduction
 
-#### 1.1 Coding Task
+## 0. Build badges
+
++ [![Code Health](https://landscape.io/github/pennyarcade/BlueYonder/master/landscape.svg?style=flat)](https://landscape.io/github/pennyarcade/BlueYonder/master)
++ [![Run Status](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/badge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) 
++ [![Coverage Badge](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/coverageBadge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) (Shippable)
++ [![Coverage Status](https://coveralls.io/repos/github/pennyarcade/BlueYonder/badge.svg?branch=master)](https://coveralls.io/github/pennyarcade/BlueYonder?branch=master) (Coveralls)
+
+
+## 1. Introduction
+
+### 1.1 Coding Task
 
 As first step of the Blue Yonder hiring process, we kindly ask applicants to hand in a solution to the small programming task below to demonstrate their professional approach to developing software. For us, this includes appropriate unit tests and the application of clean code principles. We value both technical correctness and coding style.
 Please be assured that there is no time limit, so you are free to tackle this task whenever it suits you best. Enjoy coding, we are looking forward to receive your response. If we like your solution, we will invite you for interviews, where we will also talk with you about your code.
@@ -27,7 +36,7 @@ In a deployment scenario this script needs to be deployed to multiple Debian mac
 Provide an example deployment or instructions with your solution.
 
 
-#### 1.2 Development stack used
+### 1.2 Development stack used
 
 Here is a short overview of the software used in development. For services I would usually find in a corporate 
 IT Infrastructure I am substituting free online services. I will add my favourite tools for professional use in brackets.
@@ -39,6 +48,8 @@ IT Infrastructure I am substituting free online services. I will add my favourit
 * Virtualisation: Vagrant + VirtualBox
 * Unittests: Nosetests
 * Dependency Management: PIP
+* API Documentation: Epydoc
+* Code duplication detection: clonedigger
 * Quality management: Prospector / landscape.io (Prospector + CI Tool, landscape.io)
 * Coverage reporting: Nosetests / coveralls.io (Nosetests + CI Tool, coveralls.io)
 * Continuous integration/Deployment: shippable.com (Jenkins, Atlassin Bamboo)
@@ -46,7 +57,7 @@ IT Infrastructure I am substituting free online services. I will add my favourit
 * Issue management/Work organisation: Github Issues (OpenProject, Redmine, Atlassin Jira)
 
 
-#### 1.3 Git repository structure
+### 1.3 Git repository structure
 Here is how I usually structure my code repository to facilitate a fluent coding experience in a team.
 There are 3 main branches:
 * master: all code in master is tested, stable and ready for production deployment
@@ -61,10 +72,16 @@ There are 3 main branches:
       single developers this may add too much complexity/overhead
      
       
-#### 1.4 Used python libraries
+### 1.4 Used python libraries
 
 This covers only major libraries and omits their dependencies for brevity
 
++ General
+    + 3rd party libraries
+        + nose - unit tests
+        + prospector - run all major python code quality management tools
+        + clonedigger - check for code duplication
+        + epydoc - API Documetation generator
 + Quick and dirty
     + Standard library
         + sys - for standard output
@@ -76,11 +93,47 @@ This covers only major libraries and omits their dependencies for brevity
     + Standard library
     + 3rd party libraries
         + requests - simplify web requests
-        + nose - unit tests
         + argparse - comand line argument handling
         
 
-#### 1.5 License and 3rd party material
+### 1.5 Project directory structure
+
+Here is the directory layout of this sample project. It diverts a little from an ideal structure because 
+I include multiple examples in one project
+
++ project root
+    + README
+    + LICENSE
+    + web service / build configuration
+    + main application file, run this to start the corresponding example app
++ config
+    + the application's config files go here
+    + you may symlink a different directory here tp persist configuration 
+      over different deployed versions
+    + be sure not to commit sensitive authentication data to git
+      (I may be breaking this rule for less sensitive data for convenience here)
++ docs
+    + automatically generated API documentation
+    + may be excluded from productive deployment
++ inbox
+    + directory to hold the (sample) input files
++ logs
+    + all application logs go here.
+    + in a production environment one may choose to configure the 
+      system's log directory or symlink another location
++ metrics
+    + colds code metric reports generated manually or by CI
+    + should be excluded from productive deployment
++ tests
+    + holds all unittests
+    + may be excluded from productive deployment
++ venv
+    + holds the python virtual environment (Managed by PyCharm)
+    + should not be committed to the repository
+ 
+
+
+### 1.6 License and 3rd party material
 
 An overview over the licensing of the materials used
 
@@ -101,7 +154,16 @@ An overview over the licensing of the materials used
     + I will be using sample images, urls and pages from https://www.pexels.com 
     for testing and demonstration which are licensed under Creative Commons Zero (CC0) license  
 
-### 2. List of examples
+
+### 1.7 Optional requirements
+   
+   To use the gui of Epydoc you may have to install the package `python-tk` with:
+   `sudo apt-get install python-tk`
+   
+   As far as I could find out there is no way to install this library via pip.
+
+
+## 2. List of examples
 + Quick and dirty
 + Cheated
 + Simple but solid
@@ -160,6 +222,8 @@ simple as possible (KISS principle). It does only the specific task with a minim
 and reliability. I will still use a procedural approach here since it would introduce to much complexity to use a 
 object oriented approach. 
 
+main file: `simpleandsolid.py`
+
 #### Pro:
 * still very simple and lean
 * error handling
@@ -171,3 +235,36 @@ object oriented approach.
 
 #### Con:
 * restricted feature set
+
+
+
+
+
+
+
+## 3. Build and deployment
+
+### 3.1 Local testing
+
+
+
+### 3.2 Dev build
+
+
+
+### 3.3 Stage build
+
+
+
+### 3.4 Stage deployment
+
+
+
+### 3.5 Production build
+
+
+
+### 3.6 Production deployment
+
+
+
