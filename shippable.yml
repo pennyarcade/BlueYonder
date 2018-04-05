@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - 2.7
+
+install:
+  - pip install -r requirements.txt
+
+# Make folders for the reports
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+  - rm coverage/*
+
+script:
+  - git config --global push.default simple
+  - nosetests -d --no-byte-compile --with-xunit --xunit-file=shippable/testresults/nosetests.xml --cover-erase --cover-xml --cover-xml-file=shippable/codecoverage/coverage.xml --with-coverage || true
+
+after_script:
+  - nosetests -d --no-byte-compile --with-coverage || true
+  - COVERALLS_REPO_TOKEN=VyHnt4eJdV4UrzprAufoDVSfUsy4wEzK9 coveralls || true
+
