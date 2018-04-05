@@ -2,6 +2,7 @@ astroid==1.6.3
 backports.functools-lru-cache==1.5
 certifi==2018.1.18
 chardet==3.0.4
+clonedigger==1.1.0
 configparser==3.5.0
 docutils==0.14
 dodgy==0.1.9
