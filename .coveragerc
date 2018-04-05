@@ -1,0 +1,13 @@
+[report]
+omit =
+    */.idea/*
+    */config/*
+    */docs/*
+    */inbox/*
+    */logs/*
+    */metrics/*
+    */tests/*
+    */venv/*
+
+[run]
+branch = True
