@@ -7,6 +7,7 @@ configparser==3.5.0
 docutils==0.14
 dodgy==0.1.9
 enum34==1.1.6
+epydoc==3.0.1
 flake8==3.5.0
 flake8-polyfill==1.0.2
 frosted==1.4.1
