@@ -11,6 +11,14 @@
 
 
 ## 1. Introduction
++ 1.1 Coding Task
++ 1.2 Development stack
++ 1.3 Git repository structure
++ 1.4 Used python libraries
++ 1.5 Project directory structure
++ 1.6 License and 3rd party material
++ 1.7 Requirements to run these examples
+
 
 ### 1.1 Coding Task
 
@@ -45,7 +53,7 @@ IT Infrastructure I am substituting free online services. I will add my favourit
 * Scource code management: git, github
 * Operating System: Ubuntu Mate 16.10
 * Python virtual environment
-* Virtualisation: Vagrant + VirtualBox
+* Virtualisation: Vagrant + VirtualBox; Configuration generated with puPHPet
 * Unittests: Nosetests
 * Dependency Management: PIP
 * API Documentation: Epydoc
@@ -82,6 +90,8 @@ This covers only major libraries and omits their dependencies for brevity
         + prospector - run all major python code quality management tools
         + clonedigger - check for code duplication
         + epydoc - API Documetation generator
+        + testfixtures - among others Log capturing in unittests
+        + httpmock - mock http connections for unittests
 + Quick and dirty
     + Standard library
         + sys - for standard output
@@ -91,10 +101,13 @@ This covers only major libraries and omits their dependencies for brevity
         + requests - simplify web requests
 + Simple and Solid
     + Standard library
+        + argparse - comand line argument handling
+        + logging - logging classes and constants
     + 3rd party libraries
         + requests - simplify web requests
-        + argparse - comand line argument handling
-        
+        + yaml - yaml file parsing 
+        + (file)magic - wrapper to libmagic; can guess file type
+                
 
 ### 1.5 Project directory structure
 
@@ -155,12 +168,43 @@ An overview over the licensing of the materials used
     for testing and demonstration which are licensed under Creative Commons Zero (CC0) license  
 
 
-### 1.7 Optional requirements
+### 1.7 Requirements to run these examples
    
-   To use the gui of Epydoc you may have to install the package `python-tk` with:
-   `sudo apt-get install python-tk`
-   
-   As far as I could find out there is no way to install this library via pip.
+#### Epydoc documentation generator
+
+To use the gui of Epydoc you may have to install the package `python-tk` on Debian based linux distributions with:
+`sudo apt-get install python-tk`
+
+As far as I could find out there is no way to install this library via pip.
+
+#### Modul (file)magic
+For this module a current version of `libmagic` has to be installed.
+
+Before installing filemagic, the libmagic library will need to be availabile. To test this is the check for the presence 
+of the file command and/or the libmagic man page in unix shells.
+```
+$ which file
+$ man libmagic
+```
+On Debain based linux distributions install it with the `file` package:
+
+`$ sudo apt-get install file`
+
+On Mac OSX, Apple has implemented their own version of the file command. However, libmagic can be 
+installed using homebrew or macports
+
+```
+$ brew install libmagic
+$ port install file
+```
+
+After brew finished installing, the test for the libmagic man page should pass.
+
+On Windows you'll need DLLs for libmagic. Sources of the libraries in the past have been File for Windows . 
+You will need to copy the file magic out of `[binary-zip]\share\misc`, and pass its location to Magic(magic_file=...).
+
+If you are using a 64-bit build of python, you'll need 64-bit libmagic binaries which can be found here: 
+https://github.com/pidydx/libmagicwin64. Newer version can be found here: https://github.com/nscaife/file-windows.
 
 
 ## 2. List of examples
@@ -200,7 +244,7 @@ Main file: `./quickanddirty.py`
 
 This is basically what I would do as a dev ops guy. It is the quickest approach and 
 I can trust the Linux community to write reliable and efficient tools. 
-It jut makes an entry for wget in the cron tab. wget is a very versatile tool with a lot of features.
+It just makes an entry for wget in the cron tab. wget is a very versatile tool with a lot of features.
 I include this solution for completeness and to show thinking out of the box.
 
 Main file: `crontab.tab`
@@ -235,6 +279,7 @@ main file: `simpleandsolid.py`
 
 #### Con:
 * restricted feature set
+* not as easy to expand and add features
 
 
 
