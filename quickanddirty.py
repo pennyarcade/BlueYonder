@@ -1,7 +1,12 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """
 Blue Yonder Coding Task - Image downloader
 1. Quick and dirty solution
+
+This is just a shortest possible proof of concept. There is no error handling, logging, input verification etc.
+The code is practically untestable since there are no functions.
 
 :author Martin Toennishoff:
 :created 2018/04/05:
