@@ -14,6 +14,7 @@ docutils==0.14
 dodgy==0.1.9
 enum34==1.1.6
 epydoc==3.0.1
+filemagic==1.6
 flake8==3.5.0
 flake8-polyfill==1.0.2
 frosted==1.4.1
@@ -48,5 +49,6 @@ setoptconf==0.2.0
 singledispatch==3.4.0.3
 six==1.11.0
 snowballstemmer==1.2.1
+testfixtures==6.0.0
 urllib3==1.22
 wrapt==1.10.11
