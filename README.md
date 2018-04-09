@@ -1,6 +1,11 @@
 # BlueYonder
 ## Blue Yonder coding task
 
+## Contents
++ [1. Introduction](#1-introduction)
++ [2. Examples](#2-list-of-examples)
++ [3. Build and deployment](#3-build-and-deployment)
+
 
 ## 0. Build badges
 
@@ -11,13 +16,16 @@
 
 
 ## 1. Introduction
-+ 1.1 Coding Task
-+ 1.2 Development stack
-+ 1.3 Git repository structure
-+ 1.4 Used python libraries
-+ 1.5 Project directory structure
-+ 1.6 License and 3rd party material
-+ 1.7 Requirements to run these examples
++ [1.1 Coding Task](#11-coding-task)
++ [1.2 Development stack](#12-development-stack-used)
++ [1.3 Git repository structure](#13-git-repository-structure)
++ [1.4 Used python libraries](#14-used-python-libraries)
++ [1.5 Project directory structure](#15-project-directory-structure)
++ [1.6 License and 3rd party material](#16-license-and-3rd-party-material)
++ [1.7 Requirements to run these examples](#17-requirements-to-run-these-examples)
+
+[Start of document](#contents) - [Start of chapter](#1-introduction)
+
 
 
 ### 1.1 Coding Task
@@ -43,6 +51,7 @@ Please use the Python programming language for your solution. We prefer to recei
 In a deployment scenario this script needs to be deployed to multiple Debian machines, scheduled to run every five minutes. The downloaded images should be served via http on each server.
 Provide an example deployment or instructions with your solution.
 
+[Start of document](#contents) - [Start of chapter](#1-introduction)
 
 ### 1.2 Development stack used
 
@@ -64,6 +73,8 @@ IT Infrastructure I am substituting free online services. I will add my favourit
 * Hosting: pythonanywhere.com (Server with Debian/Ubuntu, Apache/Ngnx Webserver, MySQL/MariaDB Database )
 * Issue management/Work organisation: Github Issues (OpenProject, Redmine, Atlassin Jira)
 
+[Start of document](#contents) - [Start of chapter](#1-introduction)
+
 
 ### 1.3 Git repository structure
 Here is how I usually structure my code repository to facilitate a fluent coding experience in a team.
@@ -78,6 +89,8 @@ There are 3 main branches:
        (although all developers should strive to omit committing broken code)
     * If needed and for larger teams one should use feature branches for individual development. For small projects or 
       single developers this may add too much complexity/overhead
+
+[Start of document](#contents) - [Start of chapter](#1-introduction)
      
       
 ### 1.4 Used python libraries
@@ -103,10 +116,16 @@ This covers only major libraries and omits their dependencies for brevity
     + Standard library
         + argparse - comand line argument handling
         + logging - logging classes and constants
+        + os - file handling
+        + sys - access to console streams
+        + tempfile - writing temporary files for write access test workaround
+        + errno - OS error constants 
     + 3rd party libraries
         + requests - simplify web requests
         + yaml - yaml file parsing 
         + (file)magic - wrapper to libmagic; can guess file type
+
+[Start of document](#contents) - [Start of chapter](#1-introduction)
                 
 
 ### 1.5 Project directory structure
@@ -137,12 +156,16 @@ I include multiple examples in one project
 + metrics
     + colds code metric reports generated manually or by CI
     + should be excluded from productive deployment
-+ tests
++ test
     + holds all unittests
     + may be excluded from productive deployment
++ test/fixtures
+    + external files used for testing
 + venv
     + holds the python virtual environment (Managed by PyCharm)
     + should not be committed to the repository
+
+[Start of document](#contents) - [Start of chapter](#1-introduction)
  
 
 
@@ -166,6 +189,8 @@ An overview over the licensing of the materials used
 + Sample images
     + I will be using sample images, urls and pages from https://www.pexels.com 
     for testing and demonstration which are licensed under Creative Commons Zero (CC0) license  
+
+[Start of document](#contents) - [Start of chapter](#1-introduction)
 
 
 ### 1.7 Requirements to run these examples
@@ -206,16 +231,19 @@ You will need to copy the file magic out of `[binary-zip]\share\misc`, and pass 
 If you are using a 64-bit build of python, you'll need 64-bit libmagic binaries which can be found here: 
 https://github.com/pidydx/libmagicwin64. Newer version can be found here: https://github.com/nscaife/file-windows.
 
+[Start of document](#contents) - [Start of chapter](#1-introduction)
+
 
 ## 2. List of examples
-+ Quick and dirty
-+ Cheated
-+ Simple but solid
-+ Expanded and versatile
-+ API Approach
-+ Web Form Approach
-+ Example image list page
-+ Example image source page
++ [2.1 Quick and dirty](#21-quick-and-dirty)
++ [2.2 Cheated](#22-cheated)
++ [2.3 Simple but solid](#23-simple-but-solid)
++ [2.4 Expanded and versatile](#24-expanded-and-versatile)
++ [2.5 API Approach](#25-api-approach)
++ [2.6 Web Form Approach](#25-web-form-approach)
++ [2.7 Example image list page](#27-example-image-list-page)
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 2.1 Quick and dirty
@@ -227,17 +255,19 @@ It is to be run on the webserver that serves the images.
 Main file: `./quickanddirty.py`
 
 #### Pro:
-* it just took 20 minutes to write
-* very short and easy to read
++ it just took 20 minutes to write
++ very short and easy to read
 
 #### Con:
-* hardcoded config
-* spaghetti code
-* no error handling
-* no input verification
-* basically untestable beyond trying it out
-* works only on the webserver that serves the downloaded images and may drain its resources
-* bare minimum features
++ hardcoded config
++ spaghetti code
++ no error handling
++ no input verification
++ basically untestable beyond trying it out
++ works only on the webserver that serves the downloaded images and may drain its resources
++ bare minimum features
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 2.2 Cheated
@@ -250,16 +280,21 @@ I include this solution for completeness and to show thinking out of the box.
 Main file: `crontab.tab`
 
 #### Pro:
-* no coding necessary
-* using standard linux tools
-* just one crontrab entry
-* very efficient and versatile
++ no coding necessary
++ using standard linux tools
++ just one crontrab entry
++ very efficient and versatile
 
 #### Con:
-* this is cheating as there is no coding and no Python involved
++ this is cheating as there is no coding and no Python involved
++ only customisable in terms of already included configuration options
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 2.3 Simple but solid
+
+-work in progress-
 
 This Example expands on the "quick and dirty" approach to make it reliable and testable while still keeping it as 
 simple as possible (KISS principle). It does only the specific task with a minimum feature set but improves quality 
@@ -269,47 +304,186 @@ object oriented approach.
 main file: `simpleandsolid.py`
 
 #### Pro:
-* still very simple and lean
-* error handling
-* unittests
-* more modular
-* input verification
-* logging
-* argument parsing and verification
++ still very simple and lean
++ error handling
++ unittests
++ more modular
++ input verification
++ logging
++ argument parsing and verification
 
 #### Con:
-* restricted feature set
-* not as easy to expand and add features
++ restricted feature set
++ not as easy to expand and add features
++ works only on the webserver that serves the downloaded images and may drain its resources
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
+### 2.4 Expanded and versatile
+
+-coming soon-
+
+This Example expands on the previous simple but solid approach and introduces the object oriented paradigm to 
+further modularize the app, increase maintainability and expandability. Through different classes implementing the 
+same interface functionality can easily be added/swapped. This versatility comes with the cost of increased complexity,  
+time to implement and volume of code. For long term usage and maintenance this is the best option.
+
+Tin the below class structure overview the first possible implementation represents the required feature from the 
+coding task, the other entries list possibilities for expansion
+
+#### Class structure
++ Controller
+    + Contains the general app workflow and handling as well as the coordination of the other classes/modules
+    + Possible implementations arise from the combination of the below implementations as well as a possible need 
+      for user interaction
++ Configuration loader
+    + Load and combine configuration from different sources
+    + Possible implementations:
+        + Command line argument parser
+        + Yaml file loader
+        + Ini file loader
+        + XML file loader
+        + database loader
++ Reader
+    + Reads a list of URLs to be processed from a source
+    + Possible sources:
+        + local file
+        + standatd input stream
+        + remote data via HTTP
+        + remote data via FTP
+        + remote data via network share 
+        + crawl a website to search for image links
+        + from a database table
++ Downloader
+    + Downloads the image files via different protocols
+    + Possible options:
+        + HTTP
+        + HTTP with basic authentication   
+        + HTTP with Oauth handshake
+        + FTP
+        + network share
++ Writer
+    + Writes the downloaded files one by one or collectively to their destination
+    + Possible options:
+        + One by one to local file system
+        + one by one to a remote location
+        + one by one to a network share
+        + one by one upload to an API endpoint
+        + one by one uploadd to an upload form
+        + collectively and compressed to an archive file
+        + collectively utilizing rsync to a network share 
+        + collectively utilizing rsync to a remote server via ssh
+        + write to a database
+        + chunked/paginated upload of e.g. 10 files at once
+        
+#### Pro:
++ easily maintainable
++ easily expandable
++ error handling
++ unittests
++ very modular
++ input verification
++ logging
++ argument parsing and verification
++ depending on the implementation different deployment scenarios become possible
+
+#### Con:
++ more complex
++ much more program code
++ takes much longer to design and implement
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+    
+
+### 2.5 API approach
+
+-coming soon-
+
+In this version the code is included into the web application and offers one or more API
+to trigger the execution. For small jobs this can be run directly on the server request 
+for larger jobs this should trigger an entry into a job queue. 
+
+#### Pro:
++ can be deployed as part of the web application or stand alone
++ can be triggered and monitored remotely
++ uses the web server infrastructure
++ can make use of web framework or CMS capabilities
+
+#### Con:
++ all restrictions of the webserver apply
++ additional request overhead / server load
++ needs a webserver to run
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
+### 2.6 Web Form Approach
+
+- coming soon -
+
+This is basically the same as the API approach and can be combined with it. In addition to 
+above example it offers a web form to upload/enter a list of urls and configuration to be easily
+triggered manually. It shares the same pros and cons.
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+
+
+### 2.7 Example image list page
+
+- optional -
+
+A sample page to display the downloaded images
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 
 ## 3. Build and deployment
++ [3.1 Local testing](#31-local-testing)
++ [3.2 Dev build](#31-dev-build)
++ [3.3 Stage build](#32-stage-build)
++ [3.4 Production build](#34-production build)
+
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
+
 
 ### 3.1 Local testing
 
+The local testing environment should make as much use of the IDE capabilities as possible. Unittests and code quality 
+tools should be run  manually and regularly at least before committing. The Python environment should be wrapped in a 
+virtual environment. If needed the server environment can be modelled with the help of vagrant.
+
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 3.2 Dev build
+This stage is optional and often ommited for small scale projects/teams. It runs unittests and quality management tools 
+via the continuous integration solution to spot problems on the dev branch automatically with every commit. It should 
+not be deployed automatically but may be deployed manually to showcase progress internally. 
 
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 3.3 Stage build
+The stage or prelive build is run by the CI system each time the dev branch is merged into the stage branch. It runs all
+unit tests and quality management tools again to ensure high stability. This build is then automatically deployed to a 
+stage server. There manual testing and quality assurance as well as automatical integration and end to end tests are 
+performed to test the interaction with all other stage systems of the server infrastructure. 
+This build can after quality management be frozen and showed to internal and external customers for approval.
 
-
-
-### 3.4 Stage deployment
-
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
 
 
 ### 3.5 Production build
+Only production ready, tested and approved code should be merged into the master branch wich holds the productive code.
+The productive build and deployment differs very little from the stage build. The build time tests are run again as a 
+last failsave. The master branch can be deployed automatically after a successful build but some teams prefer to trigger 
+production deployments manually.
+No integration tests are run on the production server. It is tightly monitored to ensure highest availability.
 
-
-
-### 3.6 Production deployment
+[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+ 
 
 
 
