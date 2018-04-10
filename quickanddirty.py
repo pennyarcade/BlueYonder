@@ -16,7 +16,7 @@ Usage: quickanddirty.py <path to input file>
 
 import requests
 import sys
-from urllib.parse import urlparse
+from urlparse import urlparse
 from os import linesep
 
 
