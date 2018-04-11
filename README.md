@@ -444,6 +444,7 @@ A sample page to display the downloaded images
 + [3.2 Dev build](#31-dev-build)
 + [3.3 Stage build](#32-stage-build)
 + [3.4 Production build](#34-production build)
++ [3.5 Build tools](#35-build-tools)
 
 [Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
 
@@ -454,7 +455,7 @@ The local testing environment should make as much use of the IDE capabilities as
 tools should be run  manually and regularly at least before committing. The Python environment should be wrapped in a 
 virtual environment. If needed the server environment can be modelled with the help of vagrant.
 
-[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
 
 
 ### 3.2 Dev build
@@ -462,7 +463,7 @@ This stage is optional and often ommited for small scale projects/teams. It runs
 via the continuous integration solution to spot problems on the dev branch automatically with every commit. It should 
 not be deployed automatically but may be deployed manually to showcase progress internally. 
 
-[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
 
 
 ### 3.3 Stage build
@@ -472,18 +473,45 @@ stage server. There manual testing and quality assurance as well as automatical 
 performed to test the interaction with all other stage systems of the server infrastructure. 
 This build can after quality management be frozen and showed to internal and external customers for approval.
 
-[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
 
 
-### 3.5 Production build
+### 3.4 Production build
 Only production ready, tested and approved code should be merged into the master branch wich holds the productive code.
 The productive build and deployment differs very little from the stage build. The build time tests are run again as a 
 last failsave. The master branch can be deployed automatically after a successful build but some teams prefer to trigger 
 production deployments manually.
 No integration tests are run on the production server. It is tightly monitored to ensure highest availability.
 
-[Start of document](#contents) - [Start of chapter](#2-list-of-examples)
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
  
 
+### 3.5 Build tools
+There aren't very many simple and efficient build tools in the python sphere. And most of the available options are 
+lacking in one or more aspects. On the one hand you can just "git pull and pray" but leaving yourself open to build 
+inconsistencies between servers. You can build python packages for pip but then have to rely on a pip server being 
+available and 3rd party libraries as well as the environment are not included. There are different tools to build python 
+executables but usually those are os dependent. You can try to adapt build tools from other languages which introduce 
+unnecessary overhead and complexity. An more reliable way it to use a container build system like docker. That also 
+carries a lot of overhead including its own server and is not available for all systems.  
 
+The best was to deploy a python app including its environment I could find is a combination of a tool called 
+_dh-virtualenv_ developed by Spotify and the python deploy tool _fabric_ wich seems to work very similar to a ruby based 
+deploy tool I know called capistrano.
 
+_dh-virtualenv_ bundles the complete virtual environment of one's app into a debian package. This package installs at
+`/usr/share/python/<project-name>`. The deployment process just takes three simple steps:
++ upload the .deb package
++ run `dpkg -i`
++ reload/restart app/webserver if necessary
+rollback is equally simple. Just install the previous package again. 
+
+_fabric_ can automate this process further. It is a tool to run scripts on remote servers and is configured in python 
+code. So it fits seamlessly into the Python development environment.
+
+For larger numbers of servers the use of debian packages has further advantages. The system administrators are very 
+familiar with their handling and it is pretty easy to host your own package repository.
+When the package is deployed to a repository the servers just need to run one command to update packages from that 
+repository. This can even happen as an automated task for example nightly when the server load is lowest. 
+
+[Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
