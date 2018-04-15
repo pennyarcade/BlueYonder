@@ -9,11 +9,14 @@
 
 ## 0. Build badges
 
-+ [![Code Health](https://landscape.io/github/pennyarcade/BlueYonder/master/landscape.svg?style=flat)](https://landscape.io/github/pennyarcade/BlueYonder/master)
-+ [![Run Status](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/badge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) 
-+ [![Coverage Badge](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/coverageBadge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) (Shippable)
-+ [![Coverage Status](https://coveralls.io/repos/github/pennyarcade/BlueYonder/badge.svg?branch=master)](https://coveralls.io/github/pennyarcade/BlueYonder?branch=master) (Coveralls)
-
++ [![Code Health](https://landscape.io/github/pennyarcade/BlueYonder/master/landscape.svg?style=flat)](https://landscape.io/github/pennyarcade/BlueYonder/dev) (dev)
++ [![Code Health](https://landscape.io/github/pennyarcade/BlueYonder/master/landscape.svg?style=flat)](https://landscape.io/github/pennyarcade/BlueYonder/master) (master)
++ [![Run Status](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/badge?branch=dev)](https://app.shippable.com/github/pennyarcade/BlueYonder) (dev) 
++ [![Run Status](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/badge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) (master) 
++ [![Coverage Badge](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/coverageBadge?branch=dev)](https://app.shippable.com/github/pennyarcade/BlueYonder) (Shippable dev)
++ [![Coverage Badge](https://api.shippable.com/projects/5ac5bda72b913807002b59ea/coverageBadge?branch=master)](https://app.shippable.com/github/pennyarcade/BlueYonder) (Shippable master)
++ [![Coverage Status](https://coveralls.io/repos/github/pennyarcade/BlueYonder/badge.svg?branch=dev)](https://coveralls.io/github/pennyarcade/BlueYonder?branch=dev) (Coveralls dev)
++ [![Coverage Status](https://coveralls.io/repos/github/pennyarcade/BlueYonder/badge.svg?branch=master)](https://coveralls.io/github/pennyarcade/BlueYonder?branch=master) (Coveralls master)
 
 ## 1. Introduction
 + [1.1 Coding Task](#11-coding-task)
