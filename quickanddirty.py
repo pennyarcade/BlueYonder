@@ -21,7 +21,7 @@ from os import linesep
 
 
 # hardcode output path for quick and dirty solution
-output_path = "/var/www/blueyonder/images/"
+output_path = "output/"
 
 if __name__ == "__main__":
     # assume the only argument is a valid filename
