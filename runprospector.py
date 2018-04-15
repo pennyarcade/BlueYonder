@@ -36,7 +36,7 @@ def main():
         indent = len(line) - len(line.lstrip())
 
         if (indent in (0, 2, 4)) and not summary:
-            line = line[:indent] + '[ ]' + line[indent:]
+            line = line[:indent] + '[ ] ' + line[indent:]
 
         processed += line + os.linesep
 
