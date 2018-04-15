@@ -1,20 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
-Blue Yonder Coding Task - Image downloader
-3. Simple and solid solution
+Blue Yonder Coding Task - Image downloader - 3. Simple and solid solution.
 
 :author Martin Toennishoff:
 :created 2018/04/05:
 
 Usage: quickanddirty.py <path to input file>
 """
-# 3rd party modules
-import requests
-import magic
-import yaml
-
 # standard library modules
 import argparse
 import logging
@@ -24,11 +17,17 @@ import tempfile
 import errno
 from urlparse import urlparse
 
+# 3rd party modules
+import requests
+import magic
+import yaml
+
 
 def create_parser(parserclass=argparse.ArgumentParser):
     """
-    create argument parser, handle command line parameters, provide command line help
-    Avoid a global default configuration by setting default values here
+    Create argument parser, handle command line parameters, provide command line help.
+
+    Avoid a global default configuration by setting default values here.
     Factory method
 
     @see: https://stackoverflow.com/questions/39028204/using-unittest-to-test-argparse-exit-errors
@@ -96,7 +95,8 @@ def create_parser(parserclass=argparse.ArgumentParser):
 
 def setup_logging(config):
     """
-    Setup and configure logging environment
+    Set up and configure logging environment.
+
     Factory method
 
     :param config: dictionary with configuration values
@@ -120,9 +120,9 @@ def setup_logging(config):
     )
 
     # getLogger() returns references to the same object but handlers may be duplicated. So only add handlers if there
-    # are none. This issue arrises only in unittests since this function is only called once in the script
+    # are none. This issue arises only in unittests since this function is only called once in the script
     # @see: https://stackoverflow.com/questions/6333916/python-logging-ensure-a-handler-is-added-only-once
-    if not len(logger.handlers):
+    if not logger.handlers:
         logger.addHandler(console_handler)
         logger.addHandler(file_handler)
 
@@ -131,7 +131,7 @@ def setup_logging(config):
 
 def verify_file(filename, permission, mime_type):
     """
-    Check if input/output file is a valid path and is suitable for reading/writing
+    Check if input/output file is a valid path and is suitable for reading/writing.
 
     Taking typical linux exit codes from stack overflow
     @see: https://stackoverflow.com/questions/1101957/are-there-any-standard-exit-status-codes-in-linux
@@ -156,46 +156,48 @@ def verify_file(filename, permission, mime_type):
 
     """
     path = os.path.abspath(filename)
+    result = (0, 'File is fine')
 
-    with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+    with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as wizzard:
         # File is to be opened for reading and therefore has to exist
         if permission == os.R_OK and not os.path.exists(path):
-            return 66, 'Not a valid path: %s\n' % (filename)
+            result = (66, 'Not a valid path: %s\n' % (filename))
         # File is to be opened for reading and therefore has be a valid file
         elif permission == os.R_OK and not os.path.isfile(path):
-            return 66, 'Not a valid file: %s\n' % (filename)
+            result = (66, 'Not a valid file: %s\n' % (filename))
         # check file permission for reading
         elif permission == os.R_OK and not os.access(path, permission):
-            return 77, 'No permission to read file: %s\n' % (filename)
+            result = (77, 'No permission to read file: %s\n' % (filename))
         # check the file type for files opened for reading
-        elif permission == os.R_OK and not m.id_filename(path) == mime_type:
-            return 74, 'Wrong file type "%s": %s\n' % (m.id_filename(path), filename)
+        elif permission == os.R_OK and not wizzard.id_filename(path) == mime_type:
+            result = (74, 'Wrong file type "%s": %s\n' % (wizzard.id_filename(path), filename))
         # when writing a file the target directory has to exist
         elif permission == os.W_OK and not os.path.exists(os.path.dirname(path)):
-            return 73, 'Not a valid path for output: %s\n' % (os.path.dirname(filename))
+            result = (73, 'Not a valid path for output: %s\n' % (os.path.dirname(filename)))
         # when writing a file the path has to resolve to a directory
         elif permission == os.W_OK and not os.path.isdir(os.path.dirname(path)):
-            return 73, 'Not a directory: %s\n' % (os.path.dirname(filename))
+            result = (73, 'Not a directory: %s\n' % (os.path.dirname(filename)))
         # when writing a file the directory has to be writeable
         elif permission == os.W_OK and os.path.isdir(os.path.dirname(path)):
             # work around wonky behaviour of os.access()
             try:
                 testfile = tempfile.TemporaryFile(dir=os.path.dirname(path))
                 testfile.close()
-            except OSError as e:
+            except OSError as err:
                 # catch access error
-                if e.errno == errno.EACCES:
+                if err.errno == errno.EACCES:
                     return 77, 'No permission to write to directory: %s\n' % (os.path.dirname(filename))
                 # all other errors reraise exception for unexpected error
-                e.filename = os.path.dirname(filename)
+                err.filename = os.path.dirname(filename)
                 raise
 
-        return 0, 'File is fine'
+        return result
 
 
 def verify_configuration(config, exitfunc=sys.exit):
     """
-    Sanity check configuration in command line arguments or config file; log and exit on errors
+    Sanity check configuration in command line arguments or config file; log and exit on errors.
+
     This happens before logging is set up so use stderr to output error message and terminate script
 
     Todo: Not quite sure how to tet this properly yet...
@@ -235,7 +237,8 @@ def verify_configuration(config, exitfunc=sys.exit):
 
 def merge_configuration(args, config):
     """
-    merge configuration by priority
+    Merge configuration by priority.
+
     <command line arguments> override <configuration file> override <default configuration>
 
     :param args: command line arguments object
@@ -305,7 +308,7 @@ def merge_configuration(args, config):
 
 def configure():
     """
-    get configuration and verify config values
+    Get configuration and verify config values.
 
     Todo: not sure how to test this properly but all important components are covered
 
@@ -323,7 +326,8 @@ def configure():
 
 def load_config_file(args):
     """
-    Try to load a configuration from a yaml file
+    Try to load a configuration from a yaml file.
+
     This is very error tolerant because a config file is optional and missing values are taken
     from parameters or default config
 
@@ -365,7 +369,9 @@ def load_config_file(args):
 
 def download_images(config, logger, exitfunc=sys.exit):
     """
-    Main loop, iterate over input file and process it line by line, downloading the images
+    Iterate over input file and process it line by line, downloading the images.
+
+    Main loop
 
     :param config: dictionary of configuration values
     :param logger: logger for input and output
@@ -385,7 +391,7 @@ def download_images(config, logger, exitfunc=sys.exit):
 
 def generate_filename(url, output_dir):
     """
-    generate a sensible filename from an url and prepend output directory
+    Generate a sensible filename from an url and prepend output directory.
 
     :param url: a url to process
     :param output_dir: directory to write the file to
@@ -400,21 +406,21 @@ def generate_filename(url, output_dir):
 
 def write_file(response, outfile):
     """
-    Open output file for writing binary and write image chunkwise
+    Open output file for writing binary and write image chunk wise.
 
     :param response:
     :param outfile:
     :return:
     """
-    with open(outfile, 'wb') as f:
+    with open(outfile, 'wb') as outfile:
         # use iter_content() to force response body decoding and write 4kb chunks to output file
         for chunk in response.iter_content(4096):
-            f.write(chunk)
+            outfile.write(chunk)
 
 
 def process_line(line, config, logger):
     """
-    process a line of input, i.e. a single url
+    Process a line of input, i.e. a single url.
 
     :param line: a line of input containing a url
     :param config: the config dictionary
@@ -424,23 +430,23 @@ def process_line(line, config, logger):
     logger.info("Loading %s ... " % line)
 
     # request the url via GET
-    r = requests.get(line, stream=True)
+    response = requests.get(line, stream=True)
 
     # generate a unique-ish filename that includes source information
     outfile = generate_filename(line, config['output_dir'])
 
     # If it worked then
-    if r.status_code == 200:
-        logger.info("S:%d writing file %s ... " % (r.status_code, outfile))
-        write_file(r, outfile)
+    if response.status_code == 200:
+        logger.info("S:%d writing file %s ... " % (response.status_code, outfile))
+        write_file(response, outfile)
         logger.debug("done...")
 
     # Status other than 200 = OK so request failed
     else:
-        logger.warn("S:%d ERROR downloading %s\n" % (r.status_code, line))
+        logger.warn("S:%d ERROR downloading %s\n" % (response.status_code, line))
 
 
 # Program starts off here
 if __name__ == "__main__":
-    conf, log = configure()
-    download_images(conf, log)
+    CONF, LOG = configure()
+    download_images(CONF, LOG)

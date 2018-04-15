@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
-Blue Yonder Coding Task - Image downloader
+Blue Yonder Coding Task - Image downloader.
+
 1. Quick and dirty solution
 
 This is just a shortest possible proof of concept. There is no error handling, logging, input verification etc.
@@ -14,21 +14,21 @@ The code is practically untestable since there are no functions.
 Usage: quickanddirty.py <path to input file>
 """
 
-import requests
 import sys
 from urlparse import urlparse
 from os import linesep
+import requests
 
 
 # hardcode output path for quick and dirty solution
-output_path = "output/"
+OUTPUT_PATH = "output/"
 
 if __name__ == "__main__":
     # assume the only argument is a valid filename
-    filename = sys.argv[1]
+    FILENAME = sys.argv[1]
 
     # open input file for reading line by line
-    with open(filename, 'r') as infile:
+    with open(FILENAME, 'r') as infile:
         for line in infile.readlines():
             sys.stdout.write("Loading %s ... " % line)
             # request the url via GET
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             if r.status_code == 200:
                 sys.stdout.write("S:%d writing file %s ... " % (r.status_code, outfile))
                 # open output file for writing binary
-                with open(output_path + outfile, 'wb') as f:
+                with open(OUTPUT_PATH + outfile, 'wb') as f:
                     # use iter_content() to force respons body decoding ant write 4kb chunks to output file
                     for chunk in r.iter_content(4096):
                         f.write(chunk)

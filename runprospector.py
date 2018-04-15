@@ -1,10 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
-runprospector.py.
+Run prospector and processes the output into a github style task list.
 
-This script runs prospector and processes the output into a github style task list
+File: runprospector.py.
 
 """
 
@@ -15,9 +14,11 @@ import time
 
 def main():
     """
-    runs prospector and formats its output to use as github markdown checklists
+    Run prospector and formats its output to use as github markdown checklists.
+
+    Main function
     """
-    output = subprocess.check_output(['prospector', '-0'])
+    output = subprocess.check_output(['prospector', '-0', '-P', 'prospector.yml'])
     line_number = 0
     summary = False
 
@@ -29,7 +30,7 @@ def main():
         if line.startswith('Check'):
             summary = True
 
-        if (line_number < 4) or summary or (len(line.strip()) == 0):
+        if (line_number < 4) or summary or (line.strip() == ""):
             processed += line + os.linesep
             continue
 
