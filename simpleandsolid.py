@@ -40,7 +40,7 @@ def create_parser(parserclass=argparse.ArgumentParser):
 
     # No defaults so every empty value is returned as None
     parser.add_argument(
-        '-i'
+        '-i',
         '--input_file',
         help='Input file: Plain text list of urls; one per line',
         type=lambda s: s.strip()
@@ -275,7 +275,14 @@ def merge_configuration(args, config):
     elif config['verbosity'] is not None:
         default['verbosity'] = map_log_levels[config['verbosity']]
 
-    if args.quiet is not None:
+    # Quote:
+    # >> Many in the Python community recommend a strategy of "easier to ask for forgiveness than permission"
+    # >> (EAFP) rather than "look before you leap" (LBYL).
+    # @see: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python
+    # I'm not sure where I personally stand on that issue. Intuitively most of the time I stray to the EAFP side but in
+    # this case somehow LBYL feels better to me. Probably because it saves a few lines of code and keeps to the code
+    # structure of the other conditions
+    if hasattr(args, 'quiet') and args.quiet is not None:
         default['verbosity'] = logging.FATAL
 
     if args.log_level is not None:
@@ -284,7 +291,7 @@ def merge_configuration(args, config):
         default['log_level'] = map_log_levels[config['log_level']]
 
     if args.log_file is not None:
-        default['log_file'] = args.output_dir
+        default['log_file'] = args.log_file
     elif config['log_file'] is not None:
         default['log_file'] = config['log_file']
 
@@ -306,12 +313,12 @@ def configure():
     """
     # first get command line options. They override all other config
     args = create_parser().parse_args(sys.argv[1:])
-    conf = load_config_file(args)
-    conf = merge_configuration(args, conf)
-    verify_configuration(conf)
-    log = setup_logging(conf)
+    config = load_config_file(args)
+    config = merge_configuration(args, config)
+    verify_configuration(config)
+    logger = setup_logging(config)
 
-    return conf, log
+    return conf, logger
 
 
 def load_config_file(args):
