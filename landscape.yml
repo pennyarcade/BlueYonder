@@ -1,3 +1,5 @@
+# Sadly the online version still seem to be pretty unstable.
+# So only the command line version of prospector works reliably right now.
 autodetect: yes
 strictness: veryhigh
 test-warnings: false
