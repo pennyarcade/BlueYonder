@@ -47,10 +47,10 @@ dodgy:
   run: false
 
 pyflakes:
-  run: true
+  run: false
 
 frosted:
-  run: true
+  run: false
 
 
 
