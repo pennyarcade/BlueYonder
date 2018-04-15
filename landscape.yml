@@ -32,6 +32,7 @@ pylint:
 pep257:
   disable:
     - D203
+    - D212 # Multi-line docstring summary should start at the first line - This conflicts Rule D213
   run: true
 
 pyroma:
