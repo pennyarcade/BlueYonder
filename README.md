@@ -443,7 +443,7 @@ A sample page to display the downloaded images
 + [3.1 Local testing](#31-local-testing)
 + [3.2 Dev build](#31-dev-build)
 + [3.3 Stage build](#32-stage-build)
-+ [3.4 Production build](#34-production build)
++ [3.4 Production build](#34-production-build)
 + [3.5 Build tools](#35-build-tools)
 
 [Start of document](#contents) - [Start of chapter](#3-build-and-deployment)
