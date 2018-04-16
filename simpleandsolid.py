@@ -16,6 +16,7 @@ import sys
 import tempfile
 import errno
 from urlparse import urlparse
+from pprint import pprint
 
 # 3rd party modules
 import requests
@@ -161,13 +162,13 @@ def verify_file(filename, permission, mime_type):
     with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as wizzard:
         # File is to be opened for reading and therefore has to exist
         if permission == os.R_OK and not os.path.exists(path):
-            result = (66, 'Not a valid path: %s\n' % (filename))
+            result = (66, 'Not a valid path: %s\n' % filename)
         # File is to be opened for reading and therefore has be a valid file
         elif permission == os.R_OK and not os.path.isfile(path):
-            result = (66, 'Not a valid file: %s\n' % (filename))
+            result = (66, 'Not a valid file: %s\n' % filename)
         # check file permission for reading
         elif permission == os.R_OK and not os.access(path, permission):
-            result = (77, 'No permission to read file: %s\n' % (filename))
+            result = (77, 'No permission to read file: %s\n' % filename)
         # check the file type for files opened for reading
         elif permission == os.R_OK and not wizzard.id_filename(path) == mime_type:
             result = (74, 'Wrong file type "%s": %s\n' % (wizzard.id_filename(path), filename))
@@ -321,7 +322,7 @@ def configure():
     verify_configuration(config)
     logger = setup_logging(config)
 
-    return conf, logger
+    return config, logger
 
 
 def load_config_file(args):
@@ -334,37 +335,36 @@ def load_config_file(args):
     :param args:
     :return:
     """
-    # return this in case of error
-    empty_conf = {
+    # return this in case of error or populate from file
+    config = {
         'input_file': None,
         'output_dir': None,
         'verbosity': None,
         'log_level': None,
         'log_file': None,
-        'config_file': None
+        'config_file': 'config/config_simpleandsolid.yml'
     }
 
-    filename = 'config/config_simpleandsolid.yml'
-    if args.config_file != None:
-        filename = args.config_file
+    if args.config_file is not None:
+        config['config_file'] = args.config_file
 
     try:
         # don't even try to check if the file exists beforehand we will get an exception
-        with open(filename, 'r') as stream:
+        with open(config['config_file'], 'r') as stream:
             try:
                 parsed = yaml.load(stream)
+                config.update(parsed['config'])  # overwrite none values from config
 
-                # Todo: decide on a config format and parse it into the config dictionary
-
-            except yaml.YAMLError as exc:
+            # This probably doesn't cover all exeptions yet but all I stubled upon while testing
+            except (yaml.YAMLError, TypeError):
                 # if we can open the file but its not parsable yaml
-                return empty_conf
+                return config
 
-    except IOError() as exc:
+    except IOError:
         # if we can't even open the file
-        return empty_conf
+        return config
 
-    return conf
+    return config
 
 
 def download_images(config, logger, exitfunc=sys.exit):
@@ -372,6 +372,8 @@ def download_images(config, logger, exitfunc=sys.exit):
     Iterate over input file and process it line by line, downloading the images.
 
     Main loop
+
+    Todo: not sure how to test this without triggering actual downloads passing; the function doesn't work as expected
 
     :param config: dictionary of configuration values
     :param logger: logger for input and output
@@ -404,15 +406,17 @@ def generate_filename(url, output_dir):
     )
 
 
-def write_file(response, outfile):
+def write_file(response, outpath):
     """
     Open output file for writing binary and write image chunk wise.
 
+    Todo: find out how to mock response and file
+
     :param response:
-    :param outfile:
+    :param outpath:
     :return:
     """
-    with open(outfile, 'wb') as outfile:
+    with open(outpath, 'wb') as outfile:
         # use iter_content() to force response body decoding and write 4kb chunks to output file
         for chunk in response.iter_content(4096):
             outfile.write(chunk)
@@ -421,6 +425,8 @@ def write_file(response, outfile):
 def process_line(line, config, logger):
     """
     Process a line of input, i.e. a single url.
+
+    Todo: This is too hard to test, too. Refactor!
 
     :param line: a line of input containing a url
     :param config: the config dictionary

@@ -57,13 +57,11 @@ class TestSimpleAndSolid(unittest.TestCase):
         self.assertEqual(args[1], result.verbosity)
         self.assertEqual(args[3], result.log_level)
         self.assertEqual(args[5], result.log_file)
+        self.assertEqual(args[9], result.input_file)
+        self.assertEqual(args[11], result.output_dir)
 
         # test long optional argument
         self.assertEqual(args[7], result.config_file)
-
-        # test positional arguments
-        self.assertEqual(args[9], result.input_file)
-        self.assertEqual(args[11], result.output_dir)
 
         # test alternative -q switch which should return the constant 'quiet'
         args = [
@@ -79,18 +77,27 @@ class TestSimpleAndSolid(unittest.TestCase):
         self.assertEqual('quiet', result.quiet)
 
     def test_argument_parser_no_args(self):
-        args = []
-        with self.assertRaises(ValueError) as cm:
-            self.errorparser.parse_args(args)
+        result = self.errorparser.parse_args([])
 
-        self.assertEqual("too few arguments", cm.exception.message)
+        self.assertIsNone(result.output_dir)
+        self.assertIsNone(result.config_file)
+        self.assertIsNone(result.input_file)
+        self.assertIsNone(result.verbosity)
+        self.assertIsNone(result.log_file)
+        self.assertIsNone(result.log_level)
+        self.assertIsNone(result.quiet)
 
     def test_argument_parser_only_optional_args(self):
         args = ['-v', 'debug']
-        with self.assertRaises(ValueError) as cm:
-            self.errorparser.parse_args(args)
+        result = self.errorparser.parse_args(args)
 
-        self.assertEqual("too few arguments", cm.exception.message)
+        self.assertIsNone(result.output_dir)
+        self.assertIsNone(result.config_file)
+        self.assertIsNone(result.input_file)
+        self.assertEquals('debug', result.verbosity)
+        self.assertIsNone(result.log_file)
+        self.assertIsNone(result.log_level)
+        self.assertIsNone(result.quiet)
 
     def test_argument_parser_mutually_exclusive_optional_args(self):
         args = ['-v', 'debug', '-q', 'foo.txt']
@@ -256,8 +263,111 @@ class TestSimpleAndSolid(unittest.TestCase):
             simpleandsolid.merge_configuration(MockArguments(), empty_conf)
         )
 
+    def test_merge_configuration_mixed_config_set(self):
+        class MockArguments(object):
+            input_file  = 'arg_input_file'  # priority
+            output_dir  = None
+            verbosity   = None
+            log_level   = 'error'  # priority
+            log_file    = None
+            config_file = None
 
+        empty_conf = {
+            'input_file': None,
+            'output_dir': None,
+            'verbosity': 'quiet',  # no arg so overwrites default
+            'log_level': 'info',   # overwritten by argument
+            'log_file': 'config_log_file',  # no no arg so overwrites default
+            'config_file': None
+        }
 
+        default = {
+            'input_file': 'test/fixtures/sample_input.txt',
+            'output_dir': '.',  # not overwritten anywhere
+            'verbosity': logging.WARN,
+            'log_level': logging.WARN,
+            'log_file': 'logs/general.simpleandsolid.log',
+            'config_file': 'config/configuration.simpleandsolid.yaml'   # not overwritten anywhere
+        }
 
+        self.assertDictEqual(
+            {
+                'input_file': 'arg_input_file',
+                'output_dir': '.',
+                'verbosity': logging.CRITICAL,
+                'log_level': logging.ERROR,
+                'log_file': 'config_log_file',
+                'config_file': 'config/configuration.simpleandsolid.yaml'
+            },
+            simpleandsolid.merge_configuration(MockArguments(), empty_conf)
+        )
 
+    def test_load_config_file_valid_file(self):
+        class MockArguments(object):
+            input_file  = None
+            output_dir  = None
+            verbosity   = None
+            log_level   = None
+            log_file    = None
+            config_file = None
+
+        default = {
+            'input_file': 'test/fixtures/sample_input.txt',
+            'output_dir': './output',
+            'verbosity': 'warn',
+            'log_level': 'warn',
+            'log_file': 'logs/general_simpleandsolid.log',
+            'config_file': 'config/config_simpleandsolid.yml'
+        }
+
+        self.assertDictEqual(
+            default,
+            simpleandsolid.load_config_file(MockArguments())
+        )
+
+    def test_load_config_file_noneexistant_file(self):
+        class MockArguments(object):
+            input_file = None
+            output_dir = None
+            verbosity = None
+            log_level = None
+            log_file = None
+            config_file = 'config/config_noneexistant.yml'
+
+        default = {
+            'input_file': None,
+            'output_dir': None,
+            'verbosity': None,
+            'log_level': None,
+            'log_file': None,
+            'config_file': 'config/config_noneexistant.yml'
+        }
+
+        self.assertDictEqual(
+            default,
+            simpleandsolid.load_config_file(MockArguments())
+        )
+
+    def test_load_config_file_invalid_yaml(self):
+        class MockArguments(object):
+            input_file = None
+            output_dir = None
+            verbosity = None
+            log_level = None
+            log_file = None
+            config_file = 'test/fixtures/sample_input.txt'
+
+        default = {
+            'input_file': None,
+            'output_dir': None,
+            'verbosity': None,
+            'log_level': None,
+            'log_file': None,
+            'config_file': 'test/fixtures/sample_input.txt'
+        }
+
+        self.assertDictEqual(
+            default,
+            simpleandsolid.load_config_file(MockArguments())
+        )
 
