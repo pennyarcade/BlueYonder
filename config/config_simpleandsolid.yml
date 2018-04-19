@@ -1,0 +1,6 @@
+config:
+   input_file: test/fixtures/sample_input.txt
+   output_dir: ./output
+   verbosity: warn
+   log_level: warn
+   log_file: logs/general_simpleandsolid.log

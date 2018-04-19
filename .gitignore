@@ -61,6 +61,9 @@ instance/
 # Scrapy stuff:
 .scrapy
 
+# PyCharm Project config
+.idea
+
 # Sphinx documentation
 docs/_build/
 
@@ -99,3 +102,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# metric report files
+metrics/*
+
+# log files should not be committed
+logs/*
+
+# input files should not be committed
+inbox/*.input.txt
+

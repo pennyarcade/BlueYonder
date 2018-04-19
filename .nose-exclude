@@ -1,0 +1,7 @@
+# nose exclude config
+config
+docs
+inbox
+logs
+metrics
+venv

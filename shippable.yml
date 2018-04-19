@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - 2.7
+
+# upgrade pip and install requirements
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
+# Make folders for the reports and remove old reports
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+
+script:
+  - nosetests -d --no-byte-compile --with-xunit --xunit-file=shippable/testresults/nosetests.xml --cover-erase --cover-xml --cover-xml-file=shippable/codecoverage/coverage.xml --with-coverage || true
+
+after_script:
+  - nosetests -d --no-byte-compile --with-coverage || true
+  - COVERALLS_REPO_TOKEN=VyHnt4eJdV4UrzprAufoDVSfUsy4wEzK9 coveralls || true
+
