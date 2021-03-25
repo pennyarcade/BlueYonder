@@ -42,7 +42,7 @@ pylint-flask==0.5
 pylint-plugin-utils==0.2.6
 pyOpenSSL==17.5.0
 pyroma==2.0.2
-PyYAML==3.12
+PyYAML==5.4
 requests==2.18.4
 requirements-detector==0.5.2
 setoptconf==0.2.0
